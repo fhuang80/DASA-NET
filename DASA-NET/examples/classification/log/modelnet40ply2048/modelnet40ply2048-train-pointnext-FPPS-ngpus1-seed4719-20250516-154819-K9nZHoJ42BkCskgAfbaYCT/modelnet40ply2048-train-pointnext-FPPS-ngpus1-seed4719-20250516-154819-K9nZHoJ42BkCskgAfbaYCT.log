@@ -1,0 +1,406 @@
+[05/16 15:48:19] ModelNet40Ply2048 INFO: dist_url: tcp://localhost:8888
+dist_backend: nccl
+multiprocessing_distributed: False
+ngpus_per_node: 1
+world_size: 1
+launcher: mp
+local_rank: 0
+use_gpu: True
+seed: 4719
+epoch: 0
+epochs: 600
+ignore_index: None
+val_fn: validate
+deterministic: False
+sync_bn: False
+criterion_args:
+  NAME: SmoothCrossEntropy
+  label_smoothing: 0.2
+use_mask: False
+grad_norm_clip: 1
+layer_decay: 0
+step_per_update: 1
+start_epoch: 1
+sched_on_epoch: True
+wandb:
+  use_wandb: False
+  project: PointNeXt-ModelNet40Ply2048
+  tags: ['modelnet40ply2048', 'train', 'pointnext-FPPS', 'ngpus1', 'seed4719']
+  name: modelnet40ply2048-train-pointnext-FPPS-ngpus1-seed4719-20250516-154819-K9nZHoJ42BkCskgAfbaYCT
+use_amp: False
+use_voting: False
+val_freq: 1
+resume: False
+test: False
+finetune: False
+mode: train
+logname: None
+load_path: None
+print_freq: 10
+save_freq: -1
+root_dir: log/modelnet40ply2048
+pretrained_path: None
+datatransforms:
+  train: ['PointsToTensor', 'PointCloudScaleAndTranslate']
+  val: ['PointsToTensor']
+  vote: ['PointCloudScaleAndTranslate']
+  kwargs:
+    shift: [0.2, 0.2, 0.2]
+feature_keys: pos
+num_points: 1024
+dataset:
+  common:
+    NAME: ModelNet40Ply2048
+    data_dir: ./data/ModelNet40Ply2048
+  train:
+    split: train
+    num_points: 1024
+  val:
+    split: test
+    num_points: 1024
+batch_size: 32
+dataloader:
+  num_workers: 6
+num_classes: 40
+sched: cosine
+warmup_epochs: 0
+min_lr: None
+lr: 0.001
+optimizer:
+  NAME: adamw
+  weight_decay: 0.05
+log_dir: log/modelnet40ply2048/modelnet40ply2048-train-pointnext-FPPS-ngpus1-seed4719-20250516-154819-K9nZHoJ42BkCskgAfbaYCT
+val_batch_size: 64
+model:
+  NAME: BaseCls
+  encoder_args:
+    NAME: PointNextFPPSEncoder
+    blocks: [1, 1, 1, 1, 1, 1]
+    strides: [1, 2, 2, 2, 2, 1]
+    width: 32
+    in_channels: 3
+    radius: 0.15
+    radius_scaling: 1.5
+    sa_layers: 2
+    sa_use_res: True
+    nsample: 32
+    expansion: 4
+    aggr_args:
+      feature_type: dp_fj
+      reduction: max
+    group_args:
+      NAME: ballquery
+      normalize_dp: True
+    conv_args:
+      order: conv-norm-act
+    act_args:
+      act: relu
+    norm_args:
+      norm: bn
+  cls_args:
+    NAME: ClsHead
+    num_classes: 40
+    mlps: [512, 256]
+    norm_args:
+      norm: bn1d
+rank: 0
+distributed: False
+mp: False
+task_name: modelnet40ply2048
+exp_name: pointnext-FPPS
+opts: 
+run_name: modelnet40ply2048-train-pointnext-FPPS-ngpus1-seed4719-20250516-154819-K9nZHoJ42BkCskgAfbaYCT
+run_dir: log/modelnet40ply2048/modelnet40ply2048-train-pointnext-FPPS-ngpus1-seed4719-20250516-154819-K9nZHoJ42BkCskgAfbaYCT
+exp_dir: log/modelnet40ply2048/modelnet40ply2048-train-pointnext-FPPS-ngpus1-seed4719-20250516-154819-K9nZHoJ42BkCskgAfbaYCT
+ckpt_dir: log/modelnet40ply2048/modelnet40ply2048-train-pointnext-FPPS-ngpus1-seed4719-20250516-154819-K9nZHoJ42BkCskgAfbaYCT/checkpoint
+log_path: log/modelnet40ply2048/modelnet40ply2048-train-pointnext-FPPS-ngpus1-seed4719-20250516-154819-K9nZHoJ42BkCskgAfbaYCT/modelnet40ply2048-train-pointnext-FPPS-ngpus1-seed4719-20250516-154819-K9nZHoJ42BkCskgAfbaYCT.log
+cfg_path: log/modelnet40ply2048/modelnet40ply2048-train-pointnext-FPPS-ngpus1-seed4719-20250516-154819-K9nZHoJ42BkCskgAfbaYCT/cfg.yaml
+[05/16 15:48:19] ModelNet40Ply2048 INFO: radius: [[0.15], [0.15], [0.22499999999999998], [0.33749999999999997], [0.50625], [0.7593749999999999]],
+ nsample: [[32], [32], [32], [32], [32], [32]]
+[05/16 15:48:24] ModelNet40Ply2048 INFO: NAME: ballquery
+normalize_dp: True
+radius: 0.15
+nsample: 32
+[05/16 15:48:24] ModelNet40Ply2048 INFO: NAME: ballquery
+normalize_dp: True
+radius: 0.22499999999999998
+nsample: 32
+[05/16 15:48:24] ModelNet40Ply2048 INFO: NAME: ballquery
+normalize_dp: True
+radius: 0.33749999999999997
+nsample: 32
+[05/16 15:48:24] ModelNet40Ply2048 INFO: NAME: ballquery
+normalize_dp: True
+radius: 0.50625
+nsample: 32
+[05/16 15:48:24] ModelNet40Ply2048 INFO: NAME: ballquery
+normalize_dp: True
+radius: None
+nsample: None
+[05/16 15:48:24] ModelNet40Ply2048 INFO: BaseCls(
+  (encoder): PointNextFPPSEncoder(
+    (encoder): Sequential(
+      (0): Sequential(
+        (0): SetAbstraction(
+          (convs): HeadDiffConv(
+            (conv_v): Conv1x1(
+              (conv): Sequential(
+                (0): Conv1d(6, 32, kernel_size=(1,), stride=(1,), bias=False)
+                (1): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              )
+            )
+            (mat): MaskedAttention(
+              (conv_q): Conv1x1(
+                (conv): Sequential(
+                  (0): Conv1d(6, 1, kernel_size=(1,), stride=(1,), bias=False)
+                  (1): BatchNorm1d(1, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                )
+              )
+              (conv_k): Conv1x1(
+                (conv): Sequential(
+                  (0): Conv1d(6, 1, kernel_size=(1,), stride=(1,), bias=False)
+                  (1): BatchNorm1d(1, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                )
+              )
+            )
+            (pos_conv): PositionEncoder(
+              (xyz2feature): Sequential(
+                (0): Conv2d(9, 4, kernel_size=(1, 1), stride=(1, 1))
+                (1): BatchNorm2d(4, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (2): GELU()
+              )
+              (mlp): Sequential(
+                (0): Conv1x1(
+                  (conv): Sequential(
+                    (0): Conv1d(4, 8, kernel_size=(1,), stride=(1,), bias=False)
+                    (1): BatchNorm1d(8, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  )
+                  (act): GELU()
+                )
+                (1): Conv1x1(
+                  (conv): Sequential(
+                    (0): Conv1d(8, 32, kernel_size=(1,), stride=(1,), bias=False)
+                    (1): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  )
+                )
+              )
+            )
+            (output_conv): Conv1x1(
+              (conv): Sequential(
+                (0): Conv1d(32, 32, kernel_size=(1,), stride=(1,), bias=False)
+                (1): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              )
+            )
+          )
+        )
+      )
+      (1): Sequential(
+        (0): SetAbstraction(
+          (skipconv): Sequential(
+            (0): Conv1d(32, 64, kernel_size=(1,), stride=(1,))
+          )
+          (act): ReLU(inplace=True)
+          (convs): Sequential(
+            (0): Sequential(
+              (0): Conv2d(35, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+            (1): Sequential(
+              (0): Conv2d(32, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            )
+          )
+          (grouper): QueryAndGroup()
+        )
+      )
+      (2): Sequential(
+        (0): SetAbstraction(
+          (skipconv): Sequential(
+            (0): Conv1d(64, 128, kernel_size=(1,), stride=(1,))
+          )
+          (act): ReLU(inplace=True)
+          (convs): Sequential(
+            (0): Sequential(
+              (0): Conv2d(67, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+            (1): Sequential(
+              (0): Conv2d(64, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            )
+          )
+          (grouper): QueryAndGroup()
+        )
+      )
+      (3): Sequential(
+        (0): SetAbstraction(
+          (skipconv): Sequential(
+            (0): Conv1d(128, 256, kernel_size=(1,), stride=(1,))
+          )
+          (act): ReLU(inplace=True)
+          (convs): Sequential(
+            (0): Sequential(
+              (0): Conv2d(131, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+            (1): Sequential(
+              (0): Conv2d(128, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            )
+          )
+          (grouper): QueryAndGroup()
+        )
+      )
+      (4): Sequential(
+        (0): SetAbstraction(
+          (skipconv): Sequential(
+            (0): Conv1d(256, 512, kernel_size=(1,), stride=(1,))
+          )
+          (act): ReLU(inplace=True)
+          (convs): Sequential(
+            (0): Sequential(
+              (0): Conv2d(259, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+            (1): Sequential(
+              (0): Conv2d(256, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            )
+          )
+          (grouper): QueryAndGroup()
+        )
+      )
+      (5): Sequential(
+        (0): SetAbstraction(
+          (convs): Sequential(
+            (0): Sequential(
+              (0): Conv2d(515, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+            (1): Sequential(
+              (0): Conv2d(512, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+          )
+          (grouper): GroupAll()
+        )
+      )
+    )
+  )
+  (prediction): ClsHead(
+    (head): Sequential(
+      (0): Sequential(
+        (0): Linear(in_features=512, out_features=512, bias=False)
+        (1): BatchNorm1d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU(inplace=True)
+      )
+      (1): Dropout(p=0.5, inplace=False)
+      (2): Sequential(
+        (0): Linear(in_features=512, out_features=256, bias=False)
+        (1): BatchNorm1d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU(inplace=True)
+      )
+      (3): Dropout(p=0.5, inplace=False)
+      (4): Sequential(
+        (0): Linear(in_features=256, out_features=40, bias=True)
+      )
+    )
+  )
+  (criterion): SmoothCrossEntropy()
+)
+[05/16 15:48:24] ModelNet40Ply2048 INFO: Number of params: 1.3752 M
+[05/16 15:48:24] ModelNet40Ply2048 INFO: Param groups = {
+  "decay": {
+    "weight_decay": 0.05,
+    "params": [
+      "encoder.encoder.0.0.convs.conv_v.conv.0.weight",
+      "encoder.encoder.0.0.convs.mat.conv_q.conv.0.weight",
+      "encoder.encoder.0.0.convs.mat.conv_k.conv.0.weight",
+      "encoder.encoder.0.0.convs.pos_conv.xyz2feature.0.weight",
+      "encoder.encoder.0.0.convs.pos_conv.mlp.0.conv.0.weight",
+      "encoder.encoder.0.0.convs.pos_conv.mlp.1.conv.0.weight",
+      "encoder.encoder.0.0.convs.output_conv.conv.0.weight",
+      "encoder.encoder.1.0.skipconv.0.weight",
+      "encoder.encoder.1.0.convs.0.0.weight",
+      "encoder.encoder.1.0.convs.1.0.weight",
+      "encoder.encoder.2.0.skipconv.0.weight",
+      "encoder.encoder.2.0.convs.0.0.weight",
+      "encoder.encoder.2.0.convs.1.0.weight",
+      "encoder.encoder.3.0.skipconv.0.weight",
+      "encoder.encoder.3.0.convs.0.0.weight",
+      "encoder.encoder.3.0.convs.1.0.weight",
+      "encoder.encoder.4.0.skipconv.0.weight",
+      "encoder.encoder.4.0.convs.0.0.weight",
+      "encoder.encoder.4.0.convs.1.0.weight",
+      "encoder.encoder.5.0.convs.0.0.weight",
+      "encoder.encoder.5.0.convs.1.0.weight",
+      "prediction.head.0.0.weight",
+      "prediction.head.2.0.weight",
+      "prediction.head.4.0.weight"
+    ],
+    "lr_scale": 1.0
+  },
+  "no_decay": {
+    "weight_decay": 0.0,
+    "params": [
+      "encoder.encoder.0.0.convs.conv_v.conv.1.weight",
+      "encoder.encoder.0.0.convs.conv_v.conv.1.bias",
+      "encoder.encoder.0.0.convs.mat.conv_q.conv.1.weight",
+      "encoder.encoder.0.0.convs.mat.conv_q.conv.1.bias",
+      "encoder.encoder.0.0.convs.mat.conv_k.conv.1.weight",
+      "encoder.encoder.0.0.convs.mat.conv_k.conv.1.bias",
+      "encoder.encoder.0.0.convs.pos_conv.xyz2feature.0.bias",
+      "encoder.encoder.0.0.convs.pos_conv.xyz2feature.1.weight",
+      "encoder.encoder.0.0.convs.pos_conv.xyz2feature.1.bias",
+      "encoder.encoder.0.0.convs.pos_conv.mlp.0.conv.1.weight",
+      "encoder.encoder.0.0.convs.pos_conv.mlp.0.conv.1.bias",
+      "encoder.encoder.0.0.convs.pos_conv.mlp.1.conv.1.weight",
+      "encoder.encoder.0.0.convs.pos_conv.mlp.1.conv.1.bias",
+      "encoder.encoder.0.0.convs.output_conv.conv.1.weight",
+      "encoder.encoder.0.0.convs.output_conv.conv.1.bias",
+      "encoder.encoder.1.0.skipconv.0.bias",
+      "encoder.encoder.1.0.convs.0.1.weight",
+      "encoder.encoder.1.0.convs.0.1.bias",
+      "encoder.encoder.1.0.convs.1.1.weight",
+      "encoder.encoder.1.0.convs.1.1.bias",
+      "encoder.encoder.2.0.skipconv.0.bias",
+      "encoder.encoder.2.0.convs.0.1.weight",
+      "encoder.encoder.2.0.convs.0.1.bias",
+      "encoder.encoder.2.0.convs.1.1.weight",
+      "encoder.encoder.2.0.convs.1.1.bias",
+      "encoder.encoder.3.0.skipconv.0.bias",
+      "encoder.encoder.3.0.convs.0.1.weight",
+      "encoder.encoder.3.0.convs.0.1.bias",
+      "encoder.encoder.3.0.convs.1.1.weight",
+      "encoder.encoder.3.0.convs.1.1.bias",
+      "encoder.encoder.4.0.skipconv.0.bias",
+      "encoder.encoder.4.0.convs.0.1.weight",
+      "encoder.encoder.4.0.convs.0.1.bias",
+      "encoder.encoder.4.0.convs.1.1.weight",
+      "encoder.encoder.4.0.convs.1.1.bias",
+      "encoder.encoder.5.0.convs.0.1.weight",
+      "encoder.encoder.5.0.convs.0.1.bias",
+      "encoder.encoder.5.0.convs.1.1.weight",
+      "encoder.encoder.5.0.convs.1.1.bias",
+      "prediction.head.0.1.weight",
+      "prediction.head.0.1.bias",
+      "prediction.head.2.1.weight",
+      "prediction.head.2.1.bias",
+      "prediction.head.4.0.bias"
+    ],
+    "lr_scale": 1.0
+  }
+}
+[05/16 15:48:24] ModelNet40Ply2048 INFO: ==> sucessfully loaded test data
+[05/16 15:48:24] ModelNet40Ply2048 INFO: length of validation dataset: 2468
+[05/16 15:48:25] ModelNet40Ply2048 INFO: ==> sucessfully loaded test data
+[05/16 15:48:25] ModelNet40Ply2048 INFO: number of classes of the dataset: 40, number of points sampled from dataset: 1024, number of points as model input: 1024
+[05/16 15:48:25] ModelNet40Ply2048 INFO: Training from scratch
+[05/16 15:48:26] ModelNet40Ply2048 INFO: ==> sucessfully loaded train data
+[05/16 15:48:26] ModelNet40Ply2048 INFO: length of training dataset: 9840

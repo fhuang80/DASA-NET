@@ -1,0 +1,117 @@
+[05/16 15:10:49] ModelNet40Ply2048 INFO: dist_url: tcp://localhost:8888
+dist_backend: nccl
+multiprocessing_distributed: False
+ngpus_per_node: 1
+world_size: 1
+launcher: mp
+local_rank: 0
+use_gpu: True
+seed: 1857
+epoch: 0
+epochs: 600
+ignore_index: None
+val_fn: validate
+deterministic: False
+sync_bn: False
+criterion_args:
+  NAME: SmoothCrossEntropy
+  label_smoothing: 0.2
+use_mask: False
+grad_norm_clip: 1
+layer_decay: 0
+step_per_update: 1
+start_epoch: 1
+sched_on_epoch: True
+wandb:
+  use_wandb: False
+  project: PointNeXt-ModelNet40Ply2048
+  tags: ['modelnet40ply2048', 'train', 'pointnext-FPPS', 'ngpus1', 'seed1857']
+  name: modelnet40ply2048-train-pointnext-FPPS-ngpus1-seed1857-20250516-151049-PzFWFXmByKVdP3x7byzhc8
+use_amp: False
+use_voting: False
+val_freq: 1
+resume: False
+test: False
+finetune: False
+mode: train
+logname: None
+load_path: None
+print_freq: 10
+save_freq: -1
+root_dir: log/modelnet40ply2048
+pretrained_path: None
+datatransforms:
+  train: ['PointsToTensor', 'PointCloudScaleAndTranslate']
+  val: ['PointsToTensor']
+  vote: ['PointCloudScaleAndTranslate']
+  kwargs:
+    shift: [0.2, 0.2, 0.2]
+feature_keys: pos
+num_points: 1024
+dataset:
+  common:
+    NAME: ModelNet40Ply2048
+    data_dir: ./data/ModelNet40Ply2048
+  train:
+    split: train
+    num_points: 1024
+  val:
+    split: test
+    num_points: 1024
+batch_size: 32
+dataloader:
+  num_workers: 6
+num_classes: 40
+sched: cosine
+warmup_epochs: 0
+min_lr: None
+lr: 0.001
+optimizer:
+  NAME: adamw
+  weight_decay: 0.05
+log_dir: log/modelnet40ply2048/modelnet40ply2048-train-pointnext-FPPS-ngpus1-seed1857-20250516-151049-PzFWFXmByKVdP3x7byzhc8
+val_batch_size: 64
+model:
+  NAME: BaseCls
+  encoder_args:
+    NAME: PointNextFPPSEncoder
+    blocks: [1, 1, 1, 1, 1, 1]
+    strides: [1, 2, 2, 2, 2, 1]
+    width: 32
+    in_channels: 3
+    radius: 0.15
+    radius_scaling: 1.5
+    sa_layers: 2
+    sa_use_res: True
+    nsample: 32
+    expansion: 4
+    aggr_args:
+      feature_type: dp_fj
+      reduction: max
+    group_args:
+      NAME: ballquery
+      normalize_dp: True
+    conv_args:
+      order: conv-norm-act
+    act_args:
+      act: relu
+    norm_args:
+      norm: bn
+  cls_args:
+    NAME: ClsHead
+    num_classes: 40
+    mlps: [512, 256]
+    norm_args:
+      norm: bn1d
+rank: 0
+distributed: False
+mp: False
+task_name: modelnet40ply2048
+exp_name: pointnext-FPPS
+opts: 
+run_name: modelnet40ply2048-train-pointnext-FPPS-ngpus1-seed1857-20250516-151049-PzFWFXmByKVdP3x7byzhc8
+run_dir: log/modelnet40ply2048/modelnet40ply2048-train-pointnext-FPPS-ngpus1-seed1857-20250516-151049-PzFWFXmByKVdP3x7byzhc8
+exp_dir: log/modelnet40ply2048/modelnet40ply2048-train-pointnext-FPPS-ngpus1-seed1857-20250516-151049-PzFWFXmByKVdP3x7byzhc8
+ckpt_dir: log/modelnet40ply2048/modelnet40ply2048-train-pointnext-FPPS-ngpus1-seed1857-20250516-151049-PzFWFXmByKVdP3x7byzhc8/checkpoint
+log_path: log/modelnet40ply2048/modelnet40ply2048-train-pointnext-FPPS-ngpus1-seed1857-20250516-151049-PzFWFXmByKVdP3x7byzhc8/modelnet40ply2048-train-pointnext-FPPS-ngpus1-seed1857-20250516-151049-PzFWFXmByKVdP3x7byzhc8.log
+cfg_path: log/modelnet40ply2048/modelnet40ply2048-train-pointnext-FPPS-ngpus1-seed1857-20250516-151049-PzFWFXmByKVdP3x7byzhc8/cfg.yaml
